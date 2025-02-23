@@ -44,7 +44,7 @@ A **full-stack web application** where:
 ### Database Setup
 1. Create MySQL database:
    ```sql
-   CREATE DATABASE movie-api;
+   CREATE DATABASE movie_db;
 2. Configure database (src/main/resources/application.properties):
 
 ## Run the Application
