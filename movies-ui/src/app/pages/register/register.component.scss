@@ -1,0 +1,159 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: 'Poppins', sans-serif;
+  padding: 2rem;
+}
+
+.signup-card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    h1 {
+      color: #2d3748;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: #718096;
+      font-size: 0.9rem;
+    }
+  }
+
+  .form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+
+    input {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+
+      &:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      &:focus + label,
+      &:not(:placeholder-shown) + label {
+        top: 0.4rem;
+        font-size: 0.85rem;
+        transform: translateY(-125%) scale(0.9);
+        color: #667eea;
+      }
+
+      &.invalid {
+        border-color: #fc8181;
+      }
+    }
+
+    label {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #718096;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      // background: white;
+      padding: 0 0.3rem;
+    }
+
+    .error-message {
+      color: #fc8181;
+      font-size: 0.8rem;
+      margin-top: 0.3rem;
+      padding-left: 0.5rem;
+    }
+  }
+
+  .options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1.5rem 0;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.signup-btn {
+  width: 100%;
+  padding: 1rem;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+
+  &:hover {
+    background: #5a67d8;
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    background: #c3dafe;
+    cursor: not-allowed;
+  }
+
+  .spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+}
+
+.register-link {
+  text-align: center;
+  color: #718096;
+  margin-top: 1.5rem;
+
+  a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

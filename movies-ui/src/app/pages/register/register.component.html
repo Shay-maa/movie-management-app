@@ -1,0 +1,43 @@
+<div class="signup-container">
+  <div class="signup-card">
+    <div class="header">
+      <h1>Create an Account</h1>
+      <p>Sign up to get started</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <input type="text" formControlName="firstName" required placeholder="First Name"
+               [class.invalid]="isFieldInvalid('firstName')">
+        <div class="error-message" *ngIf="isFieldInvalid('firstName')">First name is required</div>
+      </div>
+      <div class="form-group">
+        <input type="text" formControlName="lastName" required placeholder="Last Name"
+               [class.invalid]="isFieldInvalid('lastName')">
+        <div class="error-message" *ngIf="isFieldInvalid('lastName')">Last name is required</div>
+      </div>
+      <div class="form-group">
+        <input type="email" formControlName="email" required placeholder="Email Address"
+               [class.invalid]="isFieldInvalid('email')">
+        <div class="error-message" *ngIf="isFieldInvalid('email')">Email is required</div>
+      </div>
+      <div class="form-group">
+        <input type="password" formControlName="password" required placeholder="Password"
+               [class.invalid]="isFieldInvalid('password')">
+        <div class="error-message" *ngIf="isFieldInvalid('password')"> Password is required (min. 8 characters)</div>
+      </div>
+      <div class="form-group">
+        <input type="password" formControlName="confirmPassword" required placeholder="Confirm Password"
+               [class.invalid]="isFieldInvalid('confirmPassword')">
+        <div class="error-message" *ngIf="isFieldInvalid('confirmPassword')">Passwords must match</div>
+      </div>
+      <button type="submit" class="signup-btn" [disabled]="registerForm.invalid || loading">
+        <span *ngIf="!loading">Sign Up</span>
+        <div class="spinner" *ngIf="loading"></div>
+      </button>
+      <div class="register-link">
+        Already have an account? <a routerLink="/login">Sign In</a>
+      </div>
+    </form>
+  </div>
+</div>

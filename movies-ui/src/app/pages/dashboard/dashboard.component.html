@@ -1,0 +1,103 @@
+<app-navbar></app-navbar>
+<div class="home-container">
+  <h1>Admin Dashboard</h1>
+
+  <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+    <input type="text" formControlName="searchQuery" placeholder="Search for movies..."/>
+    <button type="submit" [disabled]="loading">
+      <span *ngIf="!loading">Search</span>
+      <span *ngIf="loading">Searching...</span>
+    </button>
+  </form>
+
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    Loading...
+  </div>
+
+  <div *ngIf="errorMessage" class="no-results">
+    <p> {{ errorMessage }}</p>
+  </div>
+
+  <div class="section" *ngIf="movies.length > 0">
+    <div class="section-header">
+      <h2>Search Results </h2>
+      <button class="bulk-action" (click)="addSelected()" [disabled]="!hasSelections(movies)">
+        Add Selected ({{ selectedCount(movies) }})
+      </button>
+    </div>
+
+    <div class="movie-grid">
+      <div class="movie-card" *ngFor="let movie of movies" [class.selected]="movie.selected">
+        <label class="checkbox-container">
+          <input type="checkbox" [(ngModel)]="movie.selected" [disabled]="isMovieAlreadyAdded(movie)">
+          <span class="checkmark"></span>
+        </label>
+        <img [src]="movie.poster" alt="{{ movie.title }}"/>
+        <div class="movie-info">
+          <h3>{{ movie.title }}</h3>
+          <div class="movie-details">
+            <p class="year">{{ movie.year }}</p>
+            <p class="type">{{ movie.type | titlecase }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pagination" *ngIf="searchTotalPages > 1">
+      <div class="arrow left"
+           (click)="searchPreviousPage()"
+           [class.disabled]="sCurrentPage === 0"
+           aria-label="Previous page">
+        ◀
+      </div>
+      <span>Page {{ sCurrentPage + 1 }} of {{ searchTotalPages }}</span>
+      <div class="arrow right"
+           (click)="searchNextPage()"
+           [class.disabled]="sCurrentPage >= searchTotalPages - 1"
+           aria-label="Next page">
+        ▶
+      </div>
+    </div>
+  </div>
+
+  <div class="section" *ngIf="existingMovies.length > 0">
+    <div class="section-header">
+      <h2>Current Movies</h2>
+      <button class="bulk-action remove" (click)="removeSelected()" [disabled]="!hasSelections(existingMovies)">
+        Remove Selected ({{ selectedCount(existingMovies) }})
+      </button>
+    </div>
+
+    <div class="movie-grid">
+      <div class="movie-card" *ngFor="let movie of existingMovies" [class.selected]="movie.selected">
+        <label class="checkbox-container">
+          <input type="checkbox" [(ngModel)]="movie.selected">
+          <span class="checkmark"></span>
+        </label>
+        <img [src]="movie.poster " alt="{{ movie.title }}"/>
+        <div class="movie-info">
+          <h3>{{ movie.title }}</h3>
+          <div class="movie-details">
+            <span class="rating">⭐ {{ getAverageRating(movie) | number:'1.1-1' }}</span>
+            <p class="year">{{ movie.year }}</p>
+          </div>
+          <p class="genre" *ngIf="movie.genre">{{ movie.genre }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="pagination">
+      <div class="arrow left" (click)="previousPage()" [class.disabled]="currentPage === 0" aria-label="Previous page">
+        ◀
+      </div>
+      <span>Page {{ currentPage + 1 }} To {{ totalPages }}</span>
+      <div class="arrow right" (click)="nextPage()" [class.disabled]="currentPage >= totalPages - 1"
+           aria-label="Next page">
+        ▶
+      </div>
+    </div>
+  </div>
+
+  <div class="no-results" *ngIf="movies.length === 0 && existingMovies.length === 0 && !loading">
+    <p>No movies found. Start by searching above!</p>
+  </div>
+</div>

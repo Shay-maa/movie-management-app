@@ -1,0 +1,112 @@
+<app-navbar></app-navbar>
+
+<div class="home-container">
+  <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+    <input type="text" formControlName="searchQuery" placeholder="Search for movies..."/>
+    <button type="submit" [disabled]="loading">
+      <span *ngIf="!loading">Search</span>
+      <span *ngIf="loading">Searching...</span>
+    </button>
+  </form>
+
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    Loading...
+  </div>
+
+  <div *ngIf="errorMessage" class="error">
+    <svg class="error-icon"></svg>
+    {{ errorMessage }}
+  </div>
+
+  <div class="section" *ngIf="movies.length > 0">
+    <div class="section-header">
+      <h2>Search Results ({{ movies.length }})</h2>
+    </div>
+
+    <div class="movie-grid">
+      <div class="movie-card" *ngFor="let movie of movies" (click)="viewMovieDetails(movie)">
+        <img [src]="movie.poster" alt="{{ movie.title }}"/>
+        <div class="movie-info">
+          <h3>{{ movie.title }}</h3>
+          <p class="year">{{ movie.year }}</p>
+          <p class="type">{{ movie.genre | titlecase }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" *ngIf="existingMovies.length > 0">
+    <div class="section-header">
+      <h2>All Movies</h2>
+    </div>
+
+    <div class="movie-grid">
+      <div class="movie-card" *ngFor="let movie of existingMovies" (click)="viewMovieDetails(movie)">
+        <img [src]="movie.poster" alt="{{ movie.title }}"/>
+        <div class="movie-info">
+          <h3>{{ movie.title }}</h3>
+          <div class="movie-details">
+            <span class="rating">⭐ {{ getAverageRating(movie) | number:'1.1-1' }}</span>
+            <p class="year">{{ movie.year }}</p>
+          </div>
+          <p class="genre" *ngIf="movie.genre">{{ movie.genre }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pagination">
+    <div class="arrow left" (click)="previousPage()" [class.disabled]="currentPage === 0" aria-label="Previous page">
+      ◀
+    </div>
+    <span>Page {{ currentPage + 1 }} To {{ totalPages }}</span>
+    <div class="arrow right" (click)="nextPage()" [class.disabled]="currentPage >= totalPages - 1"
+         aria-label="Next page">
+      ▶
+    </div>
+  </div>
+
+
+  <div class="movie-details-popup" *ngIf="selectedMovie">
+    <div class="details-content">
+      <button (click)="closeMovieDetails()">×</button>
+      <img [src]="selectedMovie.poster" alt="{{ selectedMovie.title }}"/>
+      <h2>{{ selectedMovie.title }}</h2>
+
+
+      <div class="rating-section">
+        <div class="user-rating">
+        <span class="stars">
+          <span *ngFor="let star of [1,2,3,4,5]"
+                (click)="rateMovie(star, selectedMovie.id!)"
+                (mouseover)="hoverRating(star)"
+                (mouseout)="resetRating()"
+                [class.active]="star <= tempRating">
+            ★
+          </span>
+        </span>
+          <p class="rating-text">
+            Your rating: {{ userRatings[selectedMovie.id!] ? userRatings[selectedMovie.id!] : 'Not rated yet' }}
+          </p>
+          <p *ngIf="errorMessage" class="error-message">
+            {{ errorMessage }}
+          </p>
+
+        </div>
+
+        <p class="average-rating">
+          ⭐ {{ getAverageRating(selectedMovie) | number:'1.1-1' }}
+
+        </p>
+      </div>
+
+
+      <p><strong>Year:</strong> {{ selectedMovie.year }}</p>
+      <p><strong>Genre:</strong> {{ selectedMovie.genre }}</p>
+      <p *ngIf="selectedMovie.plot "><strong>Description:</strong> {{ selectedMovie.plot }}</p>
+    </div>
+  </div>
+  <div class="no-results" *ngIf="movies.length === 0 && existingMovies.length === 0 && !loading">
+    <p>No movies found</p>
+  </div>
+</div>
