@@ -4,7 +4,6 @@
 A **full-stack web application** where:
 -  **Admins** manage movies using the OMDB API 
 -  **Users** browse, search, and rate movies
--  
 *(First registered user becomes admin automatically)*
 
 ---
